@@ -28,19 +28,19 @@ node('slave') {
             }
 
             // deploy is long running, so its run in parallel with tests and checkstyle
-            //stage 'Test / QA'
-			//try {
-			//	// run tests and archive results
-			//	sh "${mvnHome}/bin/mvn -s settings.xml -Dmaven.test.failure.ignore surefire:test"
-			//	step([$class: 'JUnitResultArchiver', allowEmptyResults: true, testResults: '**/target/surefire-reports/TEST-*.xml'])
-			//	// perform static analysis and archive results
-			//	sh "${mvnHome}/bin/mvn -s settings.xml site"
-			//	step([$class: 'CheckStylePublisher', canComputeNew: false, defaultEncoding: '', healthy: '10', pattern: '', unHealthy: '200'])
-			//	step([$class: 'PmdPublisher', canComputeNew: false, defaultEncoding: '', healthy: '0', pattern: '', thresholdLimit: 'normal', unHealthy: '100'])
-			//	step([$class: 'FindBugsPublisher', canComputeNew: false, defaultEncoding: '', excludePattern: '', healthy: '0', includePattern: '', pattern: '**/findbugsXml.xml', thresholdLimit: 'normal', unHealthy: '30'])
-			//} catch (all) {
-			//	error 'Test'
-			//}
+            stage 'Test / QA'
+			try {
+				// run tests and archive results
+				sh "${mvnHome}/bin/mvn -s settings.xml -Dmaven.test.failure.ignore surefire:test"
+				step([$class: 'JUnitResultArchiver', allowEmptyResults: true, testResults: '**/target/surefire-reports/TEST-*.xml'])
+				// perform static analysis and archive results
+				sh "${mvnHome}/bin/mvn -s settings.xml site"
+				step([$class: 'CheckStylePublisher', canComputeNew: false, defaultEncoding: '', healthy: '10', pattern: '', unHealthy: '200'])
+				step([$class: 'PmdPublisher', canComputeNew: false, defaultEncoding: '', healthy: '0', pattern: '', thresholdLimit: 'normal', unHealthy: '100'])
+				step([$class: 'FindBugsPublisher', canComputeNew: false, defaultEncoding: '', excludePattern: '', healthy: '0', includePattern: '', pattern: '**/findbugsXml.xml', thresholdLimit: 'normal', unHealthy: '30'])
+			} catch (all) {
+				error 'Test'
+			}
 			
             stage 'Deploy'
 			try {
@@ -73,6 +73,9 @@ node('slave') {
             }
             if (currentBuild.result == "ABORTED") {
                 hipchatSend color: 'GRAY', message: msg, room: hipChatRoom, v2enabled: false
+            }
+            if (currentBuild.result == "STABLE") {
+                hipchatSend color: 'GREEN', message: msg, room: hipChatRoom, v2enabled: false, notify: true
             }
         }
     } catch (all) {
