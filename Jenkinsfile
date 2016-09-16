@@ -46,7 +46,7 @@ node('slave') {
 			try {
 				// start server and deploy updated application. We use a file stored here in Jenkins to handle integration server configuration
 				wrap([$class: 'ConfigFileBuildWrapper', managedFiles: [[fileId: '68f4c947-5db7-43d2-b819-57a141264d3d', targetLocation: 'leeroy-server.xml', variable: '']]]) {
-					sh "${mvnHome}/bin/mvn -s settings.xml liberty:clean-server liberty:stop-server liberty:start-server -DconfigFile=kronos-server.xml -Dtimeout=120"    
+					sh "${mvnHome}/bin/mvn -s settings.xml liberty:clean-server liberty:stop-server liberty:start-server -DconfigFile=leeroy-server.xml -Dtimeout=120"    
 				}
 			} catch (all) {
 				error 'Deploy'
