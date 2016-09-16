@@ -4,10 +4,10 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.gaaroth</groupId>
-	<artifactId>leroyjenkins</artifactId>
+	<artifactId>leeroyjenkins</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>leroyjenkins</name>
+	<name>leeroyjenkins</name>
 
 	<prerequisites>
 		<maven>3</maven>

@@ -1,4 +1,4 @@
-package org.gaaroth.leroyjenkins;
+package org.gaaroth.leeroyjenkins;
 
 import javax.servlet.annotation.WebServlet;
 
