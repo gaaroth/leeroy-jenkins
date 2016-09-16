@@ -28,25 +28,25 @@ node('slave') {
             }
 
             // deploy is long running, so its run in parallel with tests and checkstyle
-            stage 'Test / QA'
-			try {
-				// run tests and archive results
-				sh "${mvnHome}/bin/mvn -s settings.xml -Dmaven.test.failure.ignore surefire:test"
-				step([$class: 'JUnitResultArchiver', allowEmptyResults: true, testResults: '**/target/surefire-reports/TEST-*.xml'])
-				// perform static analysis and archive results
-				sh "${mvnHome}/bin/mvn -s settings.xml site"
-				step([$class: 'CheckStylePublisher', canComputeNew: false, defaultEncoding: '', healthy: '10', pattern: '', unHealthy: '200'])
-				step([$class: 'PmdPublisher', canComputeNew: false, defaultEncoding: '', healthy: '0', pattern: '', thresholdLimit: 'normal', unHealthy: '100'])
-				step([$class: 'FindBugsPublisher', canComputeNew: false, defaultEncoding: '', excludePattern: '', healthy: '0', includePattern: '', pattern: '**/findbugsXml.xml', thresholdLimit: 'normal', unHealthy: '30'])
-			} catch (all) {
-				error 'Test'
-			}
+            //stage 'Test / QA'
+			//try {
+			//	// run tests and archive results
+			//	sh "${mvnHome}/bin/mvn -s settings.xml -Dmaven.test.failure.ignore surefire:test"
+			//	step([$class: 'JUnitResultArchiver', allowEmptyResults: true, testResults: '**/target/surefire-reports/TEST-*.xml'])
+			//	// perform static analysis and archive results
+			//	sh "${mvnHome}/bin/mvn -s settings.xml site"
+			//	step([$class: 'CheckStylePublisher', canComputeNew: false, defaultEncoding: '', healthy: '10', pattern: '', unHealthy: '200'])
+			//	step([$class: 'PmdPublisher', canComputeNew: false, defaultEncoding: '', healthy: '0', pattern: '', thresholdLimit: 'normal', unHealthy: '100'])
+			//	step([$class: 'FindBugsPublisher', canComputeNew: false, defaultEncoding: '', excludePattern: '', healthy: '0', includePattern: '', pattern: '**/findbugsXml.xml', thresholdLimit: 'normal', unHealthy: '30'])
+			//} catch (all) {
+			//	error 'Test'
+			//}
 			
             stage 'Deploy'
 			try {
 				// start server and deploy updated application. We use a file stored here in Jenkins to handle integration server configuration
 				wrap([$class: 'ConfigFileBuildWrapper', managedFiles: [[fileId: '68f4c947-5db7-43d2-b819-57a141264d3d', targetLocation: 'leeroy-server.xml', variable: '']]]) {
-					sh "${mvnHome}/bin/mvn -s settings.xml liberty:clean-server liberty:stop-server liberty:start-server -DconfigFile=leeroy-server.xml -Dtimeout=120"    
+					sh "${mvnHome}/bin/mvn -s settings.xml liberty:clean-server liberty:stop-server liberty:start-server -DconfigFile=leeroy-server.xml -Dtimeout=180"    
 				}
 			} catch (all) {
 				error 'Deploy'
