@@ -6,7 +6,7 @@ node('slave') {
         // Mark the code checkout 'stage'....
         stage 'Checkout'
         // Get some code from the repo
-		checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/gaaroth/leroy-jenkins']]])
+		checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/gaaroth/leeroy-jenkins']]])
         
         
         // Get the maven tool.
