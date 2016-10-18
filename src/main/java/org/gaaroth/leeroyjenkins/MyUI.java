@@ -22,6 +22,7 @@ import com.vaadin.ui.VerticalLayout;
  * The UI is initialized using {@link #init(VaadinRequest)}. This method is intended to be 
  * overridden to add component to the user interface and initialize non-component functionality.
  */
+@SuppressWarnings("serial")
 @Theme("mytheme")
 public class MyUI extends UI {
 
@@ -36,8 +37,11 @@ public class MyUI extends UI {
 		grid.addColumn("ID", t -> {
 			return t.getId().toString();
 		});
-		grid.addColumn("ID", t -> {
+		grid.addColumn("Title", t -> {
 			return t.getTitle();
+		});
+		grid.addColumn("Description", t -> {
+			return t.getDescription();
 		});
 
         Button button = new Button("Reload");
@@ -55,7 +59,7 @@ public class MyUI extends UI {
     private List<Book> generateRandomBooks() {
     	List<Book> list = new ArrayList<>();
     	for (int i = 0; i < Math.random()*100; i++) {
-    		list.add(new Book(new Long(i), "NUM-" + Math.random()));
+    		list.add(new Book(new Long(i), "TITLE-" + Math.random(), "DESC-" + Math.random()));
     	}
     	return list;
     }

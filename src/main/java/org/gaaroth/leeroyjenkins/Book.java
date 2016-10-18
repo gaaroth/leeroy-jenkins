@@ -5,13 +5,15 @@ public class Book {
 	private Long id;
 	
 	private String title;
+	
+	private String description;
 
-	public Book(Long id, String title) {
+	public Book(Long id, String title, String description) {
 		super();
 		this.id = id;
 		this.title = title;
+		this.description = description;
 	}
-	
 
 	public Long getId() {
 		return id;
@@ -27,6 +29,14 @@ public class Book {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}	
 
 }
