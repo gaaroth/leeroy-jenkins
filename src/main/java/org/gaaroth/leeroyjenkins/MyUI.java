@@ -1,5 +1,8 @@
 package org.gaaroth.leeroyjenkins;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.annotation.WebServlet;
 
 import com.vaadin.annotations.Theme;
@@ -7,8 +10,8 @@ import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Grid;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
@@ -26,20 +29,35 @@ public class MyUI extends UI {
     protected void init(VaadinRequest vaadinRequest) {
         final VerticalLayout layout = new VerticalLayout();
         
-        final TextField name = new TextField();
-        name.setCaption("Type your name here:");
+        final Label title = new Label("BOOK GRID");
+        
+        Grid<Book> grid = new Grid<>();
+		grid.setSizeFull();
+		grid.addColumn("ID", t -> {
+			return t.getId().toString();
+		});
+		grid.addColumn("ID", t -> {
+			return t.getTitle();
+		});
 
-        Button button = new Button("Click Me");
+        Button button = new Button("Reload");
         button.addClickListener( e -> {
-            layout.addComponent(new Label("Thanks " + name.getValue() 
-                    + ", it works!"));
+            grid.setItems(generateRandomBooks());
         });
         
-        layout.addComponents(name, button);
+        layout.addComponents(title, grid, button);
         layout.setMargin(true);
         layout.setSpacing(true);
         
         setContent(layout);
+    }
+    
+    private List<Book> generateRandomBooks() {
+    	List<Book> list = new ArrayList<>();
+    	for (int i = 0; i < Math.random()*100; i++) {
+    		list.add(new Book(new Long(i), "NUM-" + Math.random()));
+    	}
+    	return list;
     }
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
